@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmación Cena</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        .container {
+            max-width: 500px;
+            margin: auto;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .list-container {
+            margin-top: 20px;
+            text-align: left;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background: #f0f0f0;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Confirmación de Asistencia</h1>
+        <p>Ingresa tu nombre para confirmar tu asistencia a la cena.</p>
+        <input type="text" id="nameInput" placeholder="Escribe tu nombre aquí">
+        <button onclick="addName()">Confirmar</button>
+
+        <div class="list-container">
+            <h2>Lista de Confirmados</h2>
+            <ul id="nameList"></ul>
+        </div>
+    </div>
+
+    <script>
+        function addName() {
+            const nameInput = document.getElementById('nameInput');
+            const nameList = document.getElementById('nameList');
+
+            // Obtener el valor ingresado
+            const name = nameInput.value.trim();
+
+            if (name) {
+                // Crear un nuevo elemento de lista
+                const listItem = document.createElement('li');
+                listItem.textContent = name;
+
+                // Agregar el nombre a la lista
+                nameList.appendChild(listItem);
+
+                // Limpiar el campo de entrada
+                nameInput.value = '';
+            } else {
+                alert('Por favor, ingresa un nombre.');
+            }
+        }
+    </script>
+</body>
+</html>
