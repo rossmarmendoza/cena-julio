@@ -69,44 +69,64 @@
         </div>
     </div>
 
-    <script>
-        // Cargar la lista de confirmados desde LocalStorage
-        function loadNames() {
-            const nameList = document.getElementById('nameList');
-            const names = JSON.parse(localStorage.getItem('confirmados')) || [];
-            names.forEach(name => {
-                const listItem = document.createElement('li');
-                listItem.textContent = name;
-                nameList.appendChild(listItem);
-            });
-        }
+    <script type="module">
+        // Import the Firebase SDKs
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+        import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
 
-        // Agregar un nuevo nombre a la lista
+        // Your Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCmhocr1lnQs1jK0q4oXZ651i8JAkCzUFY",
+            authDomain: "confirmacion-cena-julio.firebaseapp.com",
+            databaseURL: "https://confirmacion-cena-julio-default-rtdb.firebaseio.com",
+            projectId: "confirmacion-cena-julio",
+            storageBucket: "confirmacion-cena-julio.firebasestorage.app",
+            messagingSenderId: "1028828321508",
+            appId: "1:1028828321508:web:6b1f2c4677126aba513ef1",
+            measurementId: "G-3SZZ07E5F1"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        // Add a new name to the database
         function addName() {
             const nameInput = document.getElementById('nameInput');
-            const nameList = document.getElementById('nameList');
-
             const name = nameInput.value.trim();
 
             if (name) {
-                // Crear un nuevo elemento de lista
-                const listItem = document.createElement('li');
-                listItem.textContent = name;
-                nameList.appendChild(listItem);
+                // Push the new name to the database
+                const namesRef = ref(database, 'names');
+                push(namesRef, name);
 
-                // Guardar el nombre en LocalStorage
-                const names = JSON.parse(localStorage.getItem('confirmados')) || [];
-                names.push(name);
-                localStorage.setItem('confirmados', JSON.stringify(names));
-
-                // Limpiar el campo de entrada
+                // Clear the input field
                 nameInput.value = '';
             } else {
                 alert('Por favor, ingresa un nombre.');
             }
         }
 
-        // Cargar la lista al inicio
+        // Listen for updates to the names list
+        function loadNames() {
+            const nameList = document.getElementById('nameList');
+            const namesRef = ref(database, 'names');
+
+            onValue(namesRef, (snapshot) => {
+                // Clear the list
+                nameList.innerHTML = '';
+
+                // Populate the list with data from the database
+                const data = snapshot.val();
+                for (const key in data) {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = data[key];
+                    nameList.appendChild(listItem);
+                }
+            });
+        }
+
+        // Load names on page load
         document.addEventListener('DOMContentLoaded', loadNames);
     </script>
 </body>
