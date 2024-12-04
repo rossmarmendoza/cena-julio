@@ -70,20 +70,34 @@
     </div>
 
     <script>
+        // Cargar la lista de confirmados desde LocalStorage
+        function loadNames() {
+            const nameList = document.getElementById('nameList');
+            const names = JSON.parse(localStorage.getItem('confirmados')) || [];
+            names.forEach(name => {
+                const listItem = document.createElement('li');
+                listItem.textContent = name;
+                nameList.appendChild(listItem);
+            });
+        }
+
+        // Agregar un nuevo nombre a la lista
         function addName() {
             const nameInput = document.getElementById('nameInput');
             const nameList = document.getElementById('nameList');
 
-            // Obtener el valor ingresado
             const name = nameInput.value.trim();
 
             if (name) {
                 // Crear un nuevo elemento de lista
                 const listItem = document.createElement('li');
                 listItem.textContent = name;
-
-                // Agregar el nombre a la lista
                 nameList.appendChild(listItem);
+
+                // Guardar el nombre en LocalStorage
+                const names = JSON.parse(localStorage.getItem('confirmados')) || [];
+                names.push(name);
+                localStorage.setItem('confirmados', JSON.stringify(names));
 
                 // Limpiar el campo de entrada
                 nameInput.value = '';
@@ -91,6 +105,9 @@
                 alert('Por favor, ingresa un nombre.');
             }
         }
+
+        // Cargar la lista al inicio
+        document.addEventListener('DOMContentLoaded', loadNames);
     </script>
 </body>
 </html>
